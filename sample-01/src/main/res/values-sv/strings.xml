@@ -11,4 +11,5 @@
     <string name="labelPassword">Lösenord:</string>
     <string name="labelRememberLogin">Kom ihåg inloggning</string>
     <string name="labelRememberPassword">Kom ihåg lösenord</string>
+    <string name="labelSelectGroup">Välj grupp på varje start</string>
 </resources>

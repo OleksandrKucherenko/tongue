@@ -11,4 +11,5 @@
     <string name="labelRememberPassword">Запомнить Пароль</string>
     <string name="labelLastOpened">Продолжить где вы остановились</string>
     <string name="btnProceed">Продолжить</string>
+    <string name="labelSelectGroup">Выбирать группу при каждом старте</string>
 </resources>

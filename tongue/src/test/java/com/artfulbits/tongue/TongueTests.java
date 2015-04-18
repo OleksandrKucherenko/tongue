@@ -1,6 +1,7 @@
 package com.artfulbits.tongue;
 
 import com.artfulbits.benchmark.Meter;
+import com.artfulbits.tongue.web.Language;
 
 import org.junit.After;
 import org.junit.AfterClass;

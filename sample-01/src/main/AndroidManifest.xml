@@ -24,6 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- Google Translate API Key : Public Key -->
+        <meta-data
+            android:name="com.google.translate.api.key"
+            android:value="AIzaSyA6J-VUMfFd_xeBi7a__E4wz7BCKFMQiKA"/>
     </application>
 
 </manifest>

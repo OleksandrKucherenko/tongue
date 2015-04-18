@@ -11,4 +11,5 @@
     <string name="labelPassword">Пароль:</string>
     <string name="labelRememberLogin">Запам\'ятати Ім\'я</string>
     <string name="labelRememberPassword">Запам\'ятати Пароль</string>
+    <string name="labelSelectGroup">Обирати групу на кожному старті</string>
 </resources>

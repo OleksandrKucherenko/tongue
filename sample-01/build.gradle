@@ -156,7 +156,7 @@ android {
 
         multiDexEnabled useMultiDex
 
-        applicationId 'com.artfulbits.toungue.sample'
+        applicationId 'com.artfulbits.tongue.sample'
         versionCode 1
         versionName "1.0"
 

@@ -1,4 +1,4 @@
-package com.artfulbits.tongue;
+package com.artfulbits.tongue.toolbox;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.view.View;
 import java.util.WeakHashMap;
 
 /** Factory that allows in one call attach automatic translation to any activity or fragment. */
-/* package */ final class TongueFactory implements LayoutInflater.Factory {
+public final class TongueFactory implements LayoutInflater.Factory {
   /** Single instance. */
   public static final TongueFactory INSTANCE = new TongueFactory();
 

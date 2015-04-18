@@ -1,4 +1,4 @@
-package com.artfulbits.tongue;
+package com.artfulbits.tongue.web;
 
 import android.support.annotation.NonNull;
 
@@ -156,6 +156,12 @@ public enum Language {
     this.englishName = this.toString().replace('_', ' ');
   }
 
+  /** Create locale instance from Language. */
+  @NonNull
+  public Locale toLocale() {
+    return new Locale(code);
+  }
+
   /**
    * Get Language by it code.
    *
@@ -172,5 +178,15 @@ public enum Language {
     }
 
     throw new InvalidParameterException("Unknown code. Code: " + code);
+  }
+
+  /**
+   * Convert instance of locale to enum value.
+   *
+   * @param locale the locale instance
+   * @return found language
+   */
+  public static Language fromLocale(@NonNull final Locale locale) {
+    return byCode(locale.getCountry());
   }
 }

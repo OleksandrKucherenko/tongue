@@ -113,7 +113,7 @@
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/labelChooseGroup"
+                android:text="@string/labelSelectGroup"
                 android:id="@+id/rb_chooseGroup"
                 android:checked="false"/>
 

@@ -13,6 +13,7 @@
     <string name="labelRememberLogin">Remember Login</string>
     <string name="labelRememberPassword">Remember Password</string>
     <string name="labelChooseGroup">Select Group</string>
+    <string name="labelSelectGroup">Select group on each start</string>
     <string name="labelLastOpened">Continue where you left off</string>
     <string name="btnProceed">Proceed</string>
 
