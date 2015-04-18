@@ -4,4 +4,4 @@
 include ':tongue'
 
 // Samples
-include ':samples:sample-01'
+include ':sample-01'

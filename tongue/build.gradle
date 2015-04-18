@@ -38,11 +38,19 @@ repositories {
     maven {
         url 'https://oss.sonatype.org/content/repositories/snapshots/'
     }
+    maven {
+        url "http://dl.bintray.com/kucherenko-alex/android"
+    }
 }
 
 dependencies {
     /* [ DEBUG/RELEASE ] ============================================================================================ */
     compile fileTree(dir: 'libs', includes: ['*.jar'])
+    /* Volley lib: v1.0.15 */
+    compile 'com.mcxiaoke.volley:library:+'
+    /* Android support annotations and support classes. */
+    compile "com.android.support:support-annotations:${androidSupportLib}"
+    compile "com.android.support:support-v4:${androidSupportLib}"
 
     /* [ UNIT TESTING ] ============================================================================================= */
     if (useTesting) {
@@ -62,6 +70,9 @@ dependencies {
         androidTestCompile 'org.mockito:mockito-core:+',
                 'com.google.dexmaker:dexmaker-mockito:+'
 
+        /* Benchmarking lib. v1.0.1.141 */
+        androidTestCompile 'com.artfulbits:meter:+@aar'
+
         /* jUnit (v4.12) */
         androidTestCompile('junit:junit:4.12') { exclude group: 'org.hamcrest' }
 
@@ -71,6 +82,7 @@ dependencies {
                 'org.hamcrest:hamcrest-library:+'
         testCompile 'org.mockito:mockito-core:+',
                 'com.google.dexmaker:dexmaker-mockito:+'
+        testCompile('com.artfulbits:meter:+@aar')
         testCompile('junit:junit:4.12') { exclude group: 'org.hamcrest' }
     }
 }
