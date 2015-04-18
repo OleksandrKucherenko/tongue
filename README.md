@@ -1,5 +1,30 @@
 # tongue
-Translate you Android UI to user native language. Library makes possible translation of UI for developer with extra efforts.
+
+Translate you Android UI to user native language in 3 lines.
+Library makes possible translation of UI without extra efforts.
+
+# State
+
+[![Build Status](https://secure.travis-ci.org/OleksandrKucherenko/tongue.png?branch=master)](https://travis-ci.org/OleksandrKucherenko/tongue)
+[![Coverage Status](https://coveralls.io/repos/OleksandrKucherenko/tongue/badge.svg?branch=master)](https://coveralls.io/r/OleksandrKucherenko/meter?branch=master)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/3248/badge.svg)](https://scan.coverity.com/projects/3248)
+[![Download](https://api.bintray.com/packages/kucherenko-alex/android/com.artfulbits%3Atongue/images/download.svg)](https://bintray.com/kucherenko-alex/android/com.artfulbits%3Atongue/_latestVersion)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/OleksandrKucherenko/tongue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+Active development, started at: 2015-04-19
+
+# Goals
+
+* Minimalistic code
+* Attaching to existing project with minimal changes (1 line for enabling)
+* 'Cheap' localization of the application over Google Translate
+* Collect suggested by user translations (crowd fund translation)
+* Support of advanced scenarios:
+    * Custom controls/views
+    * Custom inflaters
+    * Another localization provider
+    * Another library for Web API calls (right now used Volley)
+* Covered fully by tests
 
 # License
 
