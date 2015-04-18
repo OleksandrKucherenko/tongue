@@ -1,0 +1,111 @@
+# References:
+#   COVERITY SCAN: https://scan.coverity.com/travis_ci
+#   ANDROID: http://docs.travis-ci.com/user/languages/android/
+#    http://gmariotti.blogspot.se/2014/04/integrating-android-github-repo-with.html
+#   LINUX COMMANDS:
+#     GREP: http://linuxcommand.org/man_pages/grep1.html
+#     AWK:  http://linuxcommand.org/man_pages/gawk1.html
+#     BASH: http://www.gnu.org/software/bash/manual/bashref.html
+
+language: android
+
+sudo: false
+
+jdk:
+    #- oraclejdk7
+    - oraclejdk8
+
+env:
+  global:
+    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+    # via the "travis encrypt" command using the project repo's public key
+    - secure: "SGSNk6CwuNjp5yVHKB95GxjhlYmph86BUeFPwl7IYnqe5WoUR9sXkOYSuMLO5qEXr+e2YaYVIZp70xI/jBi+r/kTEdWUYjtchs/kz7dDCXLISJCpUnAIxgVNx/V3ez4/jwWI89MJcLsgJGARAziio8fBgbJf7m+grD4KIu8Ogxg="
+    # Define encrypted EMAIL variable
+    - secure: "bvDKEsJGhkVHblojj+5da5C6z7Hy93irYJZMtdsNZeiT9eERS9qVXbOgbMAWobNu2SGIA9Ce3hRA4SQ1Y2tWWltrQP54E40nWCcWSZWievRk6UL9JmSkrDf9/tyDKDJo+KnDBLF73MB9tEWaxscYdHCALXnGcoIPRoGACL1BCuA="
+    # Define encrypted COVERALLS_REPO_TOKEN variable
+    - secure: "Sg/enjLRkGiDDI1NF3uNfHoXakSzTAuAmuEhHhBagP+XJi+sSjDknRHH7G8ipIUKzUocFb0JU2eOp7egdaC2RNqNAIKnYLErg1GYv9UTGDmUYbfnoIzv/Iy0zIlQj8byi7ITY/xXaNPpljdA72iRq1T9as2y4GUxLO0x4hwUt24="
+    # say gradle to output without color codes, the same as add switch --no-color
+    - TERM=dumb
+  matrix:
+    # run 'android list targets & pause' to see list of possible targets for matrix
+    - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a  AVD_NAME='test-api21-arm'
+
+# http://docs.travis-ci.com/user/caching/
+cache:
+  gradlew: true
+  gradle: true
+  directories:
+    - $HOME/.gradle
+    - $HOME/.m2
+
+addons:
+  coverity_scan:
+    project:
+      name: "OleksandrKucherenko/tongue"
+      description: "Android UI Automatic Translation."
+    notification_email: $EMAIL
+    build_command_prepend: "./gradlew clean --no-color"
+    build_command: "./gradlew assembleDebug --no-color"
+    branch_pattern: master
+
+before_install:
+  # display list of all possible components
+  - android list sdk --no-ui --all --extended | grep -E '^id:' | awk -F '"' '{$1=""; print $2}'
+  # display list of installed emulators
+  - android list targets | grep -e '^\(\(id:\)\|\( Tag\)\)'
+  # make scripts executable for linux CI
+  - chmod +x gradlew
+  - chmod +x wait-for-avd
+
+# list of available components https://github.com/travis-ci/travis-ci/issues/2301
+# For a full list, run `android list sdk -a --extended`
+android:
+  components:
+    - platform-tools
+    - extra-android-support
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - build-tools-22.0.1
+    - android-22
+  licenses:
+    - '.+'
+
+install:
+  - true
+
+branches:
+  only:
+    - master
+
+before_script:
+  ############# before executing the emulator run gradle with "warmup" task in background mode
+  #- ./gradlew dependencyUpdates >/dev/null 2>/dev/null &
+  ############# Create and start emulator
+  #- echo "${ANDROID_TARGET}", "${ANDROID_ABI}", "${AVD_NAME}"
+  #- echo no | android create avd --force -n "$AVD_NAME" -t "$ANDROID_TARGET" --abi "$ANDROID_ABI"
+  #- emulator -avd $AVD_NAME -no-skin -no-audio -no-window >/dev/null 2>/dev/null &
+  ############# now we will wait for emulator
+  #- ./wait-for-avd
+  #- adb shell input keyevent 26 &
+  #- adb shell input keyevent 82 &
+
+script:
+  # lets compile the project during the emulator startup
+  #- ./gradlew assembleDebug assembleDebugTest --info -PdisablePreDex
+  # second run will be fast!
+  #- travis_retry ./gradlew build connectedCheck --info
+  #- ./gradlew build connectedCheck --info
+  - ./gradlew test
+  # cleanup a little for better caching reuse
+  - rm $HOME/.gradle/daemon/2.2.1/*.*
+  - rm $HOME/.gradle/caches/modules-2/modules-2.lock
+
+after_success:
+  # - ./gradlew :samples:sample-01:coveralls
+  ############# dump structure of the project
+  #- ls -R
+  ############# coverage report
+  - ./gradlew :tongue:coveralls
+
+notifications:
+  email: false
