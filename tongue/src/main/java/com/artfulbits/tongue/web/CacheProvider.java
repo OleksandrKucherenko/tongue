@@ -6,6 +6,8 @@ import android.view.View;
 import com.artfulbits.tongue.ResourceString;
 import com.artfulbits.tongue.toolbox.MemoryCache;
 
+import java.util.Locale;
+
 /** In memory cache provider. */
 public class CacheProvider implements Localization.Provider {
   @Override
@@ -15,7 +17,7 @@ public class CacheProvider implements Localization.Provider {
 
   /** {@inheritDoc} */
   @Override
-  public boolean supported(@NonNull final Language language) {
+  public boolean supported(@NonNull final Locale language) {
     // force initialization of cache instance
     final MemoryCache cache = MemoryCache.getCache(language);
 
