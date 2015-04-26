@@ -142,11 +142,17 @@ android {
       debuggable true
       jniDebuggable true
       shrinkResources false /* incompatible with useJack !!! */
+
     }
     release {
+      testCoverageEnabled false
+      debuggable false
+      jniDebuggable false
+
       minifyEnabled false
       shrinkResources false /* incompatible with useJack !!! */
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
     }
   }
 
@@ -154,10 +160,16 @@ android {
     test {
       // include library sources into tests
       java.srcDirs android.sourceSets.main.java.srcDirs
-      java.srcDirs "${project.buildDir}/generated/source/buildConfig/debug"
-      java.srcDirs "${project.buildDir}/generated/source/r/debug"
 
       resources.srcDir file('src/test/resources')
+    }
+    testDebug {
+      java.srcDirs "${project.buildDir}/generated/source/buildConfig/debug"
+      java.srcDirs "${project.buildDir}/generated/source/r/debug"
+    }
+    testRelease {
+      java.srcDirs "${project.buildDir}/generated/source/buildConfig/release"
+      java.srcDirs "${project.buildDir}/generated/source/r/release"
     }
 
     debug.setRoot('build-types/debug')

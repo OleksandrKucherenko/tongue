@@ -26,7 +26,7 @@ env:
     # Define encrypted EMAIL variable
     # user@pc> gem install travis
     # user@pc> travis encrypt EMAIL=...email...
-    - secure: "bvDKEsJGhkVHblojj+5da5C6z7Hy93irYJZMtdsNZeiT9eERS9qVXbOgbMAWobNu2SGIA9Ce3hRA4SQ1Y2tWWltrQP54E40nWCcWSZWievRk6UL9JmSkrDf9/tyDKDJo+KnDBLF73MB9tEWaxscYdHCALXnGcoIPRoGACL1BCuA="
+    - secure: "Gy+MndbpL0UAvVnu8EMS3YPSrwyxoBPcN7AqbG6KIHzE3qetAcb8wcESmTWBS8eWNp2HFoyCUC04IGuIOjkOk5f6iR2AwHzUSFitk4I85kOc21G8/jKX8G5BYUsPOTz2mR4StIs31OnxTyEKm1IrMkd2OYDhqjX8NY9rS6rcb9c="
     # Define encrypted COVERALLS_REPO_TOKEN variable
     # user@pc> gem install travis
     # user@pc> travis encrypt COVERALLS_REPO_TOKEN=...token...
