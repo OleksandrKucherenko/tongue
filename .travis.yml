@@ -19,11 +19,17 @@ env:
   global:
     # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
     # via the "travis encrypt" command using the project repo's public key
-    - secure: "SGSNk6CwuNjp5yVHKB95GxjhlYmph86BUeFPwl7IYnqe5WoUR9sXkOYSuMLO5qEXr+e2YaYVIZp70xI/jBi+r/kTEdWUYjtchs/kz7dDCXLISJCpUnAIxgVNx/V3ez4/jwWI89MJcLsgJGARAziio8fBgbJf7m+grD4KIu8Ogxg="
+    # user@pc> gem install travis
+    # user@pc> travis encrypt COVERITY_SCAN_TOKEN=...token...
+    - secure: "lK+Exd9cpjZ20FcU0Q1bpzjAuieyb5ijoWEH8NXDSG33nNOe3j9VcpRufThoRlY6HBiVlQrCgZrhwvwSA9DV+r8Z/6EXmhBwryETYGRGzNzhQYsAcMM5r+rNfAYWAUG4T/Me9JXuRHr3z5ozmWx+boUsrjAwiO8ZRue8yVzP9hM="
     # Define encrypted EMAIL variable
+    # user@pc> gem install travis
+    # user@pc> travis encrypt EMAIL=...email...
     - secure: "bvDKEsJGhkVHblojj+5da5C6z7Hy93irYJZMtdsNZeiT9eERS9qVXbOgbMAWobNu2SGIA9Ce3hRA4SQ1Y2tWWltrQP54E40nWCcWSZWievRk6UL9JmSkrDf9/tyDKDJo+KnDBLF73MB9tEWaxscYdHCALXnGcoIPRoGACL1BCuA="
-    # Define encrypted COVERALLS_REPO_TOKEN variable - repo_token: 3cNqOxfs6TwHuTcWs19aULIScsxFv0fg9
-    - secure: "Sg/enjLRkGiDDI1NF3uNfHoXakSzTAuAmuEhHhBagP+XJi+sSjDknRHH7G8ipIUKzUocFb0JU2eOp7egdaC2RNqNAIKnYLErg1GYv9UTGDmUYbfnoIzv/Iy0zIlQj8byi7ITY/xXaNPpljdA72iRq1T9as2y4GUxLO0x4hwUt24="
+    # Define encrypted COVERALLS_REPO_TOKEN variable
+    # user@pc> gem install travis
+    # user@pc> travis encrypt COVERALLS_REPO_TOKEN=...token...
+    - secure: "mm9U/C/0vo2g7jYhBMpXKO38owaDvfgUyIhGuPQnaLdW/Yo3Et/KBcisE6gYunapT65gZZ1mwjAR27RpeIDI3CLZt/oT9tN3TWxLm7UIvgXqXEmuwCj9X8s2NBeuz2Ku4Bhq2b/xwEUakjyoiwAwQgC3+SZSo57tCUjW318ho/A="
     # say gradle to output without color codes, the same as add switch --no-color
     - TERM=dumb
   matrix:
