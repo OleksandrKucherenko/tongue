@@ -154,6 +154,9 @@ android {
     test {
       // include library sources into tests
       java.srcDirs android.sourceSets.main.java.srcDirs
+      java.srcDirs "${project.buildDir}/generated/source/buildConfig/debug"
+      java.srcDirs "${project.buildDir}/generated/source/r/debug"
+
       resources.srcDir file('src/test/resources')
     }
 
