@@ -21,7 +21,8 @@ env:
     # via the "travis encrypt" command using the project repo's public key
     # user@pc> gem install travis
     # user@pc> travis encrypt COVERITY_SCAN_TOKEN=...token...
-    - secure: "lK+Exd9cpjZ20FcU0Q1bpzjAuieyb5ijoWEH8NXDSG33nNOe3j9VcpRufThoRlY6HBiVlQrCgZrhwvwSA9DV+r8Z/6EXmhBwryETYGRGzNzhQYsAcMM5r+rNfAYWAUG4T/Me9JXuRHr3z5ozmWx+boUsrjAwiO8ZRue8yVzP9hM="
+    # value composed by page https://scan.coverity.com/projects/4875/builds/new?tab=travis_ci
+    - secure: "l9fttkGRfbUQ9fT+UFtROsD4/H7sX8sx1Wl/QtMPufLLB9p32X2Sz6jAoUe8ruvuoppw7OH0ZwPYfxxgupNsMZ7xxc3m0+H3sjPiVZjj+I77J4KCIfVAYsW67bHVBiGUp8EoAzW89gI6Jy40laVu3FfI3h+ydtV6x1DUQEajba8="
     # Define encrypted EMAIL variable
     # user@pc> gem install travis
     # user@pc> travis encrypt EMAIL=...email...
