@@ -23,7 +23,10 @@ public final class TextExtractor implements ResourcesExtractor.Extractor {
   /** {@inheritDoc} */
   @Override
   public boolean supports(@NonNull final View v) {
-    return TextView.class.isInstance(v);
+    // we do not support detached from Context views
+    return null != v.getContext() &&
+        TextView.class.isInstance(v) &&
+        !TextUtils.isEmpty(((TextView) v).getText());
   }
 
   /** {@inheritDoc} */

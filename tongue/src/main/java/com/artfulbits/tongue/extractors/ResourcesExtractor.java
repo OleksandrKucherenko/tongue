@@ -21,6 +21,8 @@ public final class ResourcesExtractor {
   static {
     register(TextExtractor.INSTANCE);
     register(HintExtractor.INSTANCE);
+
+    // TODO: ImageView.contentDescription
   }
 
 	/* [ REGISTRATION ] ============================================================================================== */
@@ -51,6 +53,7 @@ public final class ResourcesExtractor {
    * @param v the instance of view
    * @return the list of extracted resource strings.
    */
+  @NonNull
   public static List<ResourceString> extract(@NonNull final View v) {
     final List<ResourceString> results = new ArrayList<>();
 
@@ -63,6 +66,7 @@ public final class ResourcesExtractor {
     return results;
   }
 
+  /** Ask extractors to make update of the corresponding string on provided instance. */
   public static void update(@NonNull final View v, @NonNull final ResourceString r) {
     for (final Extractor extractor : sProviders) {
       if (extractor.supports(v)) {

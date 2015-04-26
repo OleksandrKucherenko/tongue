@@ -4,12 +4,18 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.artfulbits.tongue.ResourceString;
-import com.artfulbits.tongue.toolbox.MemoryCache;
+import com.artfulbits.tongue.toolbox.IResourceStringsCache;
+import com.artfulbits.tongue.toolbox.SharedPreferencesCache;
 
 import java.util.Locale;
 
-/** In memory cache provider. */
+/**
+ * Cache provider, it store values in shared preferences. Provider is responsible for converting translation context
+ * {@link com.artfulbits.tongue.web.Localization.TaskContext} into static result {@link
+ * com.artfulbits.tongue.web.CacheProvider.StaticResult}.
+ */
 public class CacheProvider implements Localization.Provider {
+  /** {@inheritDoc} */
   @Override
   public float priority() {
     return 10.0f;
@@ -18,48 +24,61 @@ public class CacheProvider implements Localization.Provider {
   /** {@inheritDoc} */
   @Override
   public boolean supported(@NonNull final Locale language) {
-    // force initialization of cache instance
-    final MemoryCache cache = MemoryCache.getCache(language);
-
-    return null != cache;
+    return true;
   }
 
+  /** {@inheritDoc} */
   @Override
-  public Localization.Task localize(@NonNull final Localization.TaskContext context) {
-    final MemoryCache cache = MemoryCache.getCache(context.language);
-    final ResourceString value = cache.get(context.resource);
+  public Localization.Task localize(@NonNull final Localization.TaskContext tc) {
+    final IResourceStringsCache cache = SharedPreferencesCache.getCache(tc.language);
+    final ResourceString value = cache.get(tc.resource);
 
     if (null != value) {
       // if available callback, than raise onSuccess
-      if (null != context.callback) {
-        final View view = context.getView();
+      if (null != tc.callback) {
+        final View view = tc.getView();
 
-        // be sure that view instance is still exists
-        if (null != view) {
-          context.callback.onSuccess(view, context.resource, value);
-        }
+        // be sure that view instance is still exists, dead view does not need our callback
+        if (null == view) return null;
+
+        tc.callback.onSuccess(view, tc.resource, value);
       }
 
-      return new Localization.Task() {
-        @NonNull
-        @Override
-        public Localization.TaskContext getContext() {
-          return context;
-        }
-
-        @Override
-        public ResourceString getResult() {
-          return value;
-        }
-
-        @Override
-        public boolean isComplete() {
-          return true;
-        }
-      };
+      return new StaticResult(tc, value);
     }
 
     // give chance to other providers
     return null;
+  }
+
+  /** Task that contains static result, which never changed in time. */
+  private static class StaticResult implements Localization.Task {
+    private final Localization.TaskContext mContext;
+    private final ResourceString mValue;
+
+    public StaticResult(@NonNull final Localization.TaskContext context, @NonNull final ResourceString value) {
+      mContext = context;
+      mValue = value;
+    }
+
+    /** {@inheritDoc} */
+    @NonNull
+    @Override
+    public Localization.TaskContext getContext() {
+      return mContext;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @NonNull
+    public ResourceString getResult() {
+      return mValue;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isComplete() {
+      return true;
+    }
   }
 }

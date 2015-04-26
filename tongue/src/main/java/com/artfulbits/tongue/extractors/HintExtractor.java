@@ -23,7 +23,9 @@ public class HintExtractor implements ResourcesExtractor.Extractor {
   /** {@inheritDoc} */
   @Override
   public boolean supports(@NonNull View v) {
-    return TextView.class.isInstance(v);
+    return null != v.getContext() &&
+        TextView.class.isInstance(v) &&
+        !TextUtils.isEmpty(((TextView) v).getHint());
   }
 
   /** {@inheritDoc} */
@@ -34,7 +36,7 @@ public class HintExtractor implements ResourcesExtractor.Extractor {
 
     final Locale locale = new LocaleHelper(context).getRuntimeLocale();
     final TextView t = (TextView) v;
-    final String value = t.getHint().toString();
+    final String value = (t.getHint() + "");
 
     return (TextUtils.isEmpty(value)) ? ResourceString.EMPTY :
         ResourceString.hint(resolveId(v), value, locale);

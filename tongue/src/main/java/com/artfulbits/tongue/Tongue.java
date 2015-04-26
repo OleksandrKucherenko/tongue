@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.artfulbits.tongue.extractors.ResourcesExtractor;
-import com.artfulbits.tongue.toolbox.TongueFactory;
+import com.artfulbits.tongue.toolbox.ResourcesInflaterFactory;
 import com.artfulbits.tongue.toolbox.ViewsUpdater;
 import com.artfulbits.tongue.web.CacheProvider;
 import com.artfulbits.tongue.web.EmbedResources;
@@ -31,6 +31,9 @@ public final class Tongue {
   /** {@code true} - provider initialize, otherwise {@code false}. */
   private final static AtomicBoolean IS_INITIALIZED = new AtomicBoolean(false);
 
+  /** Instance of the cache. We use it for storing newly extracted resources on disk. */
+  private static CacheProvider sCache;
+
 	/* [ CONSTRUCTORS ] ============================================================================================== */
 
   /** hidden constructor. */
@@ -46,18 +49,19 @@ public final class Tongue {
    * @param context the context
    */
   public static void initialize(@NonNull final Context context) {
-    TongueFactory.initialize(context);
-
+    // register all possible providers
     if (!IS_INITIALIZED.getAndSet(true)) {
       // step #1: try embedded resources
       Localization.register(new EmbedResources(context));
 
       // step #2: try cached from previous sessions localizations
-      Localization.register(new CacheProvider());
+      Localization.register(sCache = new CacheProvider());
 
       // step #3: by Google Translate provider
       Localization.register(new GoogleTranslateVolley(context));
     }
+
+    ResourcesInflaterFactory.initialize(context);
   }
 
   /**
@@ -69,6 +73,15 @@ public final class Tongue {
    */
   public static int translateTo(@NonNull final View v, @NonNull final Locale l) {
     return translateTo(v, l, new ViewsUpdater());
+  }
+
+  /** Get reference on shared cache. */
+  public static CacheProvider getCache() {
+    if (!IS_INITIALIZED.get()) {
+      throw new IllegalStateException("Initialize module first by calling Tongue.initialize(...).");
+    }
+
+    return sCache;
   }
 
 	/* [ IMPLEMENTATION ] ============================================================================================ */
@@ -84,7 +97,9 @@ public final class Tongue {
   private static int translateTo(@NonNull final View v, @NonNull final Locale l, @Nullable final Tongue.Callback callback) {
     int counter = 0;
 
-    for (final Pair<View, List<ResourceString>> p : resources(views(v))) {
+    final List<Pair<View, List<ResourceString>>> found = resources(views(v));
+
+    for (final Pair<View, List<ResourceString>> p : found) {
       counter += schedule(p.first, p.second, l, callback);
     }
 
@@ -163,8 +178,8 @@ public final class Tongue {
 
       // NOTE: factory iterate over registered localization providers and if possible -
       // extract translation. If extraction is done from cache, than provider raise
-      // Callback.onSuccess immediately, otherwise its scheduled and will be raised
-      // from a background thread.
+      // Callback.onSuccess immediately, otherwise its queued for background processing
+      // and will be raised from a background thread.
       final Localization.Task task = Localization.create(c);
 
       if (null != task && !task.isComplete()) {

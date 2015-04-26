@@ -2,6 +2,7 @@ package com.artfulbits.tongue.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,7 +11,7 @@ import com.artfulbits.tongue.Tongue;
 public class MainActivity extends ActionBarActivity {
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     // attach translator
@@ -23,17 +24,24 @@ public class MainActivity extends ActionBarActivity {
           .add(R.id.container, new PlaceholderFragment())
           .commit();
     }
+
+    final String[] knownLocales = getAssets().getLocales();
+
+    // print all found locales
+    for (String locale : knownLocales)
+      Log.i("MainActivity", locale);
+
   }
 
   @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
+  public boolean onCreateOptionsMenu(final Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.main, menu);
     return true;
   }
 
   @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
+  public boolean onOptionsItemSelected(final MenuItem item) {
     boolean result = false;
 
     // Handle action bar item clicks here. The action bar will

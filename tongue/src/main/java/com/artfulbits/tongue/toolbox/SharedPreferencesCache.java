@@ -1,5 +1,6 @@
 package com.artfulbits.tongue.toolbox;
 
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -10,21 +11,24 @@ import java.util.Locale;
 import java.util.Map;
 
 /** Cache localized strings in memory. */
-public class MemoryCache {
+public class SharedPreferencesCache implements IResourceStringsCache {
   /* [ CONSTANTS ] ================================================================================================= */
 
   /** All instances of localization cache's. */
-  private final static Map<Locale, MemoryCache> sCaches = new HashMap<>();
+  private final static Map<Locale, IResourceStringsCache> sCaches = new HashMap<>();
 
 	/* [ MEMBERS ] =================================================================================================== */
 
   /** Language associated with this Cache instance. */
   public final Locale Language;
 
+  private final SharedPreferences mStorage;
+
 	/* [ CONSTRUCTORS ] ============================================================================================== */
 
-  public MemoryCache(@NonNull final Locale lang) {
+  public SharedPreferencesCache(@NonNull final Locale lang) {
     Language = lang;
+    mStorage = null;
   }
 
 	/* [ STATIC METHODS ] ============================================================================================ */
@@ -36,12 +40,12 @@ public class MemoryCache {
    * @return the cache instance
    */
   @NonNull
-  public static MemoryCache getCache(@NonNull final Locale lang) {
+  public static IResourceStringsCache getCache(@NonNull final Locale lang) {
     if (!sCaches.containsKey(lang)) {
       synchronized (sCaches) {
         if (!sCaches.containsKey(lang)) {
           // create instance of cache if thread safe manner
-          sCaches.put(lang, new MemoryCache(lang));
+          sCaches.put(lang, new SharedPreferencesCache(lang));
         }
       }
     }
@@ -51,7 +55,8 @@ public class MemoryCache {
 
 	/* [ IMPLEMENTATION & HELPERS ] ================================================================================== */
 
-  /** Check that requested resource string exists in cache. */
+  /** {@inheritDoc} */
+  @Override
   public boolean contains(@NonNull final ResourceString resource) {
     // TODO: check embedded localization resources
 
@@ -60,11 +65,15 @@ public class MemoryCache {
     return false;
   }
 
+  /** {@inheritDoc} */
+  @Override
   @Nullable
-  public ResourceString get(@NonNull final ResourceString r) {
+  public ResourceString get(@NonNull final ResourceString key) {
     return null;
   }
 
+  /** {@inheritDoc} */
+  @Override
   public void put(@NonNull final ResourceString key, @NonNull final ResourceString value) {
     // TODO: store value in cache
   }

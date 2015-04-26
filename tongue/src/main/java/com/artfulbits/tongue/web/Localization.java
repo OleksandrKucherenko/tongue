@@ -90,7 +90,7 @@ public final class Localization {
     @NonNull
     TaskContext getContext();
 
-    /** Get result of the translation. */
+    /** Get results of the translation. */
     @NonNull
     ResourceString getResult();
 
@@ -106,17 +106,23 @@ public final class Localization {
     /** Is requested language supported by provider or not. */
     boolean supported(@NonNull Locale language);
 
-    /** Create background task based on provided context. */
+    /**
+     * Create background task based on provided context. Method should return {@code null} if cannot provide any
+     * localization for provided context.
+     */
+    @Nullable
     Task localize(@NonNull final TaskContext context);
   }
 
+  /** Context that keep weak reference on View that request translation. */
   public final static class TaskContext {
+    /** Weak reference on View. */
     public final WeakReference<View> view;
-
+    /** Original resource for translation. */
     public final ResourceString resource;
-
+    /** Destination language. */
     public final Locale language;
-
+    /** Reference on listener that waits for translation results. */
     public final Tongue.Callback callback;
 
     public TaskContext(@NonNull final View v, @NonNull final ResourceString r,
@@ -134,6 +140,7 @@ public final class Localization {
     }
   }
 
+  /** Sorts providers by priority. */
   private static class byPriority implements java.util.Comparator<Provider> {
     @Override
     public int compare(final Provider lhs, final Provider rhs) {

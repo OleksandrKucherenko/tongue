@@ -86,11 +86,12 @@
             android:id="@+id/sp_group"
             android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
+        <!-- android:id="@+id/cb_login" -->
+        <!-- View without predefined ID -->
         <CheckBox
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/labelRememberLogin"
-            android:id="@+id/cb_login"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:checked="false"/>
 

@@ -159,6 +159,10 @@ public enum Language {
   /** Create locale instance from Language. */
   @NonNull
   public Locale toLocale() {
+    if (this == Language.Unknown) {
+      throw new InvalidParameterException("Unknown Language cannot have any corresponding Locale.");
+    }
+
     return new Locale(code);
   }
 

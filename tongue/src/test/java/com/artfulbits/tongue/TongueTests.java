@@ -1,20 +1,19 @@
 package com.artfulbits.tongue;
 
+import android.content.Context;
+
 import com.artfulbits.benchmark.Meter;
+import com.artfulbits.tongue.web.CacheProvider;
 import com.artfulbits.tongue.web.Language;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.*;
+import org.junit.rules.*;
 
 import java.security.InvalidParameterException;
 import java.util.logging.Level;
 
-import static org.junit.Assert.fail;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 /** jUnit tests. */
 @SuppressWarnings("PMD")
@@ -73,11 +72,25 @@ public class TongueTests {
 
   @Test(expected = InvalidParameterException.class)
   public void test_00_WrongTranslationLanguage() {
-    Tongue.translateTo(null, Language.Afrikaans);
-
-    Tongue.translateTo(null, Language.Unknown);
+    Tongue.translateTo(null, Language.Unknown.toLocale());
 
     fail("API should not allow calls with Language.Unknown language parameter.");
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void test_01_WrongInitialization() {
+    Tongue.getCache();
+
+    fail("Disk cache should not be available until the Tongue.iniitialize() is called.");
+  }
+
+  @Test
+  public void test_02_NormalInitialization() throws Exception {
+    final Context context = new android.test.mock.MockContext();
+
+    Tongue.initialize(context);
+    final CacheProvider cache = Tongue.getCache();
+
+    assertThat(cache, notNullValue());
+  }
 }
