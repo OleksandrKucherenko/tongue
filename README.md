@@ -1,5 +1,7 @@
 # tongue
 
+[![Join the chat at https://gitter.im/OleksandrKucherenko/tongue](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/OleksandrKucherenko/tongue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Translate you Android UI to user native language in 3 lines.
 Library makes possible translation of UI without extra efforts.
 
