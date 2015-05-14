@@ -1,12 +1,13 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.artfulbits.tongue"
-          tools:ignore="GradleOverrides">
+<manifest
+    package="com.artfulbits.tongue"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="GradleOverrides">
 
-    <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="22"/>
+  <uses-sdk
+      android:minSdkVersion="10"
+      android:targetSdkVersion="22"/>
 
-    <application/>
+  <application/>
 
 </manifest>

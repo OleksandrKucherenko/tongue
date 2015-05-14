@@ -11,6 +11,10 @@
     <application
         android:label="Meter Library, Tests">
         <uses-library android:name="android.test.runner"/>
+      <!-- Google Translate API Key : Public Key -->
+      <meta-data
+          android:name="com.google.translate.api.key"
+          android:value="AIzaSyA6J-VUMfFd_xeBi7a__E4wz7BCKFMQiKA"/>
     </application>
 
 </manifest>
