@@ -22,6 +22,7 @@ buildscript {
 
 // CONFIGURATION based on: http://tools.android.com/tech-docs/new-build-system/user-guide
 
+//region apply plugin: 'jacoco'
 if (useJacoco) {
   // NOTE: very important to register JaCoCo plugin before the Android, otherwise XML
   // coverage report will be impossible to generate. Will work only HTML reporting.
@@ -29,6 +30,7 @@ if (useJacoco) {
   /* http://raptordigital.blogspot.se/2014/08/code-coverage-reports-using-robolectric.html */
   apply plugin: 'jacoco'
 }
+//endregion
 apply plugin: 'com.android.library'
 apply from: "${rootProject.rootDir}/gradle/config/quality.gradle"
 
@@ -81,7 +83,7 @@ dependencies {
         'org.hamcrest:hamcrest-core:+',
         'org.hamcrest:hamcrest-library:+'
     testCompile 'org.mockito:mockito-core:+'
-    testCompile(group: 'com.artfulbits', name: 'meter', version: '+')
+    testCompile 'com.artfulbits:meter:+'
     testCompile('junit:junit:4.12') { exclude group: 'org.hamcrest' }
     //region testCompile('org.robolectric:robolectric:+')
     /* Robolectric (v2.4) */
@@ -228,12 +230,26 @@ afterEvaluate {
     // http://goo.gl/wXhBIF --> MockableJarGenerator.java
     mock.finalizedBy patchMockableAndroidJar
   }
+  /* Path classpath of the test tasks for using our patched version of the JAR */
+  tasks.matching { it.name.startsWith("test") }.each { t ->
+    def old = "mockable-android-${androidTargetSdkVersion}.jar"
+    def mock = "${project.buildDir}\\intermediates\\patched-mockable-android-${androidTargetSdkVersion}.jar"
+    try {
+      t.classpath = files(t.classpath.files, mock).filter { it.name != old }
+    } catch (final Throwable ignored) {
+      // ignore task
+    }
+  }
 }
 
 /* Create a copy of original mockable Jar */
 task copyMockableAndroidJar(type: Copy) {
   description = 'Create backup copy of mockable-android-${api}.jar file'
   group = 'Unit Testing'
+
+  // incremental build support
+  inputs.property "api", androidTargetSdkVersion
+  outputs.files "mockable-android-${androidTargetSdkVersion}-original.jar"
 
   from "${project.buildDir}/intermediates/mockable-android-${androidTargetSdkVersion}.jar"
   into "${project.buildDir}/intermediates/"
@@ -252,12 +268,13 @@ task patchMockableAndroidJar(type: Zip, dependsOn: copyMockableAndroidJar) {
   // set archive name and destination
   entryCompression = ZipEntryCompression.STORED  // speedup task by excluding compression
   destinationDir = file("${project.buildDir}/intermediates")
-  archiveName = "mockable-android-${androidTargetSdkVersion}.jar"
+  archiveName = "patched-mockable-android-${androidTargetSdkVersion}.jar"
   def source = "${project.buildDir}/intermediates/mockable-android-${androidTargetSdkVersion}-original.jar"
 
   // exclude from Mocks Jar classes which we replace by own implementation
   from(zipTree(source)) {
     exclude '**/android/util/SparseArray.class'
+    exclude '**/android/util/Log.class'
   }
 }
 
