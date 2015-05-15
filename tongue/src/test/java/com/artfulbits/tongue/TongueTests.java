@@ -22,7 +22,10 @@ import static org.junit.Assert.*;
 /** jUnit tests. */
 @SuppressWarnings("PMD")
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 21, manifest = "./src/test/AndroidManifest.xml", constants = BuildConfig.class)
+@Config(emulateSdk = 21
+, reportSdk = 18
+, manifest = "./src/test/AndroidManifest.xml"
+, constants = BuildConfig.class)
 public class TongueTests {
 
   /* [ MEMBERS ] =================================================================================================== */
