@@ -102,7 +102,7 @@ script:
   # second run will be fast!
   #- travis_retry ./gradlew build connectedCheck --info
   #- ./gradlew build connectedCheck --info
-  - ./gradlew clean test --info -PdisablePreDex
+  - ./gradlew clean test --info -PdisablePreDex --continue
   # cleanup a little for better caching reuse
   - rm $HOME/.gradle/daemon/2.2.1/*.*
   - rm $HOME/.gradle/caches/modules-2/modules-2.lock
